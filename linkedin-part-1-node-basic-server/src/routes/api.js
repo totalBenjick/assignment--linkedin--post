@@ -3,11 +3,20 @@ const { Router } = require('express');
 const app = Router();
 
 const Companies =  require('../controllers/Companies')
+const Jobs =  require('../controllers/Jobs')
 
 app.get('/companies', Companies.index);
 app.get('/companies/:companyId', Companies.getById);
 app.post('/companies', Companies.create);
-app.put('/companies', (request,response) =>{
+app.put('/companies/:companyId', Companies.update );	
+
+
+app.delete('/companies/:companyId', Companies.delete);
+
+app.get('/jobs', Jobs.index);
+app.get('/jobs/:jobId', Jobs.getById);
+app.post('/jobs', Jobs.create);
+app.put('/jobs', (request,response) =>{
 	response
 		.json({
 			type:'PUT',
@@ -15,13 +24,9 @@ app.put('/companies', (request,response) =>{
 		.status(200);	
 });
 
-app.delete('/companies', (request,response) =>{
-	response
-		.json({
-			type:'DELETE'
-		})
-		.status(200);
-});
+app.delete('/jobs/:jobId', Jobs.delete);
+
+
 
 module.exports = app;
 /*

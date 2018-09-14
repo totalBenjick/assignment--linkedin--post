@@ -1,4 +1,5 @@
 /* Import the modules. */
+require('dotenv').config();
 const express = require('express');
 const http = require('http');
 const fs = require('fs');
@@ -6,12 +7,23 @@ const chalk = require('chalk');
 const morgan = require('morgan');
 var cors = require('cors');
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT||3000;
+/*const PORT = process.env.PORT || 3000;
+*/
 const indexFile = `${ __dirname }/index.html`;
 const api = require('./src/routes/api');
-/*app.set('json spaces', 2);
-*/
-//Parse  body request
+const mongoose = require('mongoose');
+
+/*app.set('json spaces', 2);*///Parse  body request
+
+mongoose.connect(process.env.MONGODB_URI,{
+  useNewUrlParser:true
+});
+
+mongoose.connection.on('connected', ()=>{
+  console.log('Succesful')
+})
+
 app.use(express.json());
 app.use(express.urlencoded({
   extended:true
@@ -43,6 +55,7 @@ app.get('/', (request, response) => {
 });
 
 app.use('/api/v1/', api);  
+
 /*con que ENDPOINT SE EJECTUA ESTO DE ARRIBA*/
 
 app.use((request, response) => {
